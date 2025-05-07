@@ -1,13 +1,17 @@
 
 import './App.css'
+import LandingPage from './components/LandingPage'
 import TranscriptComponent from './components/TranscriptComponent'
+
+import { MainRoutes } from './routes/Route'
+
 
 function App() {
   
 
   return (
     <div>
-      <TranscriptComponent videoId="xRYuopk57SM" />
+      <MainRoutes/>
     </div>
   )
 }

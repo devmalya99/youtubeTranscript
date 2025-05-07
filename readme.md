@@ -139,3 +139,16 @@ Build a modern, mobile-first web app that helps users discover and save cooking 
 
 > 🚀 You're building something unique: functional, smart, and user-focused. Keep it lean, ship fast, and polish iteratively.
 
+## features that make it truely outstanding 
+-filtering out non-verbal videos
+-location bases youtube suggestion
+-Ai integration for giving clean ingredient result
+-one step-one -click to get your next dish items 
+-shareable links to whatsapp and more sites
+
+## API 
+### Youtube search api: 
+- http://localhost:9100/api/v1/youtube/search?query=butter+chicken&language=en
+
+### Fetching transcript:
+-

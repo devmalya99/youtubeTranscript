@@ -1,46 +1,49 @@
-import { useState, useEffect } from 'react';
-import { YoutubeTranscript } from 'youtube-transcript';
-const TranscriptComponent = ({ videoId }) => {
-  const [transcript, setTranscript] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+import React from 'react';
+import TranscriptComponent from './TranscriptComponent';
 
-  useEffect(() => {
-    const fetchTranscript = async () => {
-      setLoading(true);
-      try {
-        // Dynamic import to handle module issues
-       
-        const transcriptChunks = await YoutubeTranscript.fetchTranscript(videoId);
-        setTranscript(transcriptChunks);
-      } catch (err) {
-        setError(err.message);
-        console.error('Error fetching transcript:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (videoId) {
-      fetchTranscript();
-    }
-  }, [videoId]);
-
-  if (loading) return <div>Loading transcript...</div>;
-  if (error) return <div>Error: {error}</div>;
+const YouTubeResults = ({ results }) => {
+  if (!results || results.length === 0) {
+    return <p className="text-center text-gray-500 dark:text-gray-400">No videos found.</p>;
+  }
 
   return (
-    <div className="transcript">
-      {transcript.map((entry, index) => (
-        <p key={index}>
-          <span className="timestamp">
-            {new Date(entry.offset).toISOString().substr(11, 8)}:
-          </span>
-          {entry.text}
-        </p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-4 py-8">
+      {results.map((video) => (
+        <div
+          key={video.videoId}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 space-y-3 w-full"
+        >
+          {/* Embedded Video */}
+          <div className="relative pb-[56.25%] h-0 rounded-xl overflow-hidden">
+            <iframe
+              src={`https://www.youtube.com/embed/${video.videoId}?modestbranding=1`}
+              title={video.title}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute top-0 left-0 w-full h-full"
+            ></iframe>
+          </div>
+
+          {/* Video Meta */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
+              {video.title}
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">{video.channelTitle}</p>
+            <p className="text-xs text-gray-400">{new Date(video.publishedAt).toDateString()}</p>
+          </div>
+
+          {/* Transcript Component */}
+          <div className="text-sm text-gray-700 dark:text-gray-300 max-h-48 overflow-y-auto border-t pt-2 mt-2">
+            <TranscriptComponent videoId={video.videoId} />
+          </div>
+        </div>
       ))}
+
+
     </div>
   );
 };
 
-export default TranscriptComponent;
+export default YouTubeResults;

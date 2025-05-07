@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 // import connectDB from './config/db.js';
 import transcriptRoutes from './routes/transcript.routes.js';
-
+import youtubeRoutes from './routes/youtubeRoutes.js';
 // Load environment variables
 dotenv.config();
 
@@ -18,12 +18,14 @@ app.use(express.json());
 // connectDB();
 
 // Routes
-app.use('/api/transcript', transcriptRoutes);
+app.use('/api/v1/transcript', transcriptRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'OK' });
 });
+
+app.use('/api/v1/youtube', youtubeRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
